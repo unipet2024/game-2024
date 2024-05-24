@@ -59,7 +59,7 @@ pub fn deactive_handle(ctx: Context<Deactive>) -> Result<()> {
     let currenct = Clock::get()?.unix_timestamp as u64;
     require_gte!(
         currenct,
-        game.duration_active + user_account.time,
+        game.duration_active + user_account.time as u64,
         GameErrors::StillLock
     );
 
@@ -80,11 +80,12 @@ pub fn deactive_handle(ctx: Context<Deactive>) -> Result<()> {
         1,
     )?;
 
+    let clock = Clock::get().unwrap();
     emit!(UserDeactiveEvent {
         user: ctx.accounts.user.key(),
-        nft: ctx.accounts.nft_user.key(),
         mint: ctx.accounts.mint.key(),
-        time: currenct
+        time: clock.unix_timestamp,
+        slot: clock.slot,
     });
 
     Ok(())

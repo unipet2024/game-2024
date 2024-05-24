@@ -97,18 +97,20 @@ pub fn active_by_sol_handle(ctx: Context<ActiveBySol>) -> Result<()> {
     //update total collect
     game.fees[index].total_collect += game.fees[index].amount;
 
-    let currenct = Clock::get()?.unix_timestamp as u64;
 
+    let clock = Clock::get().unwrap();
     //update user account
-    user_account.init(user.key(), currenct, ctx.bumps.user_account)?;
+    user_account.init(user.key(), clock.unix_timestamp, ctx.bumps.user_account)?;
 
+
+ 
     emit!(UserActiveEvent {
         user: user.key(),
-        nft: ctx.accounts.nft_user.key(),
         mint: ctx.accounts.mint.key(),
         currency: Pubkey::default(),
         amount: game.fees[index].amount,
-        time: currenct
+        time: clock.unix_timestamp,
+        slot: clock.slot,
     });
 
     Ok(())
