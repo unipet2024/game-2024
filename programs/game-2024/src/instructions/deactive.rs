@@ -19,7 +19,7 @@ pub struct Deactive<'info> {
 
     #[account(
         mut,
-        close = user,
+        // close = user,
         associated_token::mint = mint,
         associated_token::authority = game,
     )]
@@ -51,7 +51,7 @@ pub struct Deactive<'info> {
 }
 
 pub fn deactive_handle(ctx: Context<Deactive>) -> Result<()> {
-    let game = &ctx.accounts.game;
+    let game = &mut ctx.accounts.game;
     let user_account = &mut ctx.accounts.user_account;
     // let mint = &ctx.accounts.mint;
     // let user = &mut ctx.accounts.user;
@@ -64,12 +64,17 @@ pub fn deactive_handle(ctx: Context<Deactive>) -> Result<()> {
     );
 
     //transfer NFT  from user to game contract
-    msg!("Transfer NFT from game contract to user");
+    msg!(
+        "Transfer NFT from {:} to {:}",
+        ctx.accounts.nft_game.key(),
+        ctx.accounts.nft_user.key()
+    );
+
     let seeds: &[&[u8]] = &[GAME_ACCOUNT, &[game.bump]];
     let signer = &[&seeds[..]];
     transfer(
         CpiContext::new(
-            ctx.accounts.mint.to_account_info(),
+            ctx.accounts.token_program.to_account_info(),
             Transfer {
                 from: ctx.accounts.nft_game.to_account_info(),
                 to: ctx.accounts.nft_user.to_account_info(),
@@ -80,7 +85,10 @@ pub fn deactive_handle(ctx: Context<Deactive>) -> Result<()> {
         1,
     )?;
 
+    msg!("Transfer done");
+
     let clock = Clock::get().unwrap();
+
     emit!(UserDeactiveEvent {
         user: ctx.accounts.user.key(),
         mint: ctx.accounts.mint.key(),

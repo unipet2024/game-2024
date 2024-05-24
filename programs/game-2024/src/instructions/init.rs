@@ -7,7 +7,7 @@ use crate::{AuthRole, AuthorityRole, Fee, Game, ADMIN_ROLE, GAME_ACCOUNT, OPERAT
 #[instruction(duration_active: u64, fees: Vec<Fee>)]
 pub struct InitGame<'info> {
     #[account(
-        init_if_needed,  
+        init,  
         payer = authority, 
         space = 8 + 77 + fees.len() * 56,
         // space = 1000,
@@ -16,7 +16,7 @@ pub struct InitGame<'info> {
     )]
     pub game: Box<Account<'info, Game>>,
     #[account(
-        init_if_needed,
+        init,
         space = 8 + 40, // 1 admin
         payer = authority,
         seeds = [ADMIN_ROLE], 
@@ -24,7 +24,7 @@ pub struct InitGame<'info> {
     )]
     pub admin_account:  Account<'info, AuthorityRole>,
     #[account(
-        init_if_needed,
+        init,
         space = 8+170, // max 5 operator
         payer = authority,
         seeds = [OPERATOR_ROLE], 
