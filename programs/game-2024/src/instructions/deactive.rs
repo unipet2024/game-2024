@@ -19,7 +19,7 @@ pub struct Deactive<'info> {
 
     #[account(
         mut,
-        // close = user,
+        close = user,
         associated_token::mint = mint,
         associated_token::authority = game,
     )]

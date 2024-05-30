@@ -18,7 +18,7 @@ pub struct ActiveBySpl<'info> {
     pub game: Box<Account<'info, Game>>,
 
     #[account(
-        init_if_needed,
+        init,
         payer=user,
         associated_token::mint = mint,
         associated_token::authority = game,
@@ -26,7 +26,8 @@ pub struct ActiveBySpl<'info> {
     pub nft_game: Account<'info, TokenAccount>,
 
     #[account(
-        mut,
+        init_if_needed,
+        payer=user,
         associated_token::mint = currency_mint,
         associated_token::authority = game
     )]
@@ -109,7 +110,6 @@ pub fn active_by_spl_handle(ctx: Context<ActiveBySpl>) -> Result<()> {
     // //update user account
     user_account.init(user.key(), clock.unix_timestamp, ctx.bumps.user_account)?;
 
- 
     emit!(UserActiveEvent {
         user: user.key(),
         mint: ctx.accounts.mint.key(),
