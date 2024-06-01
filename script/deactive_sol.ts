@@ -3,7 +3,7 @@ import { Wallet } from "@coral-xyz/anchor";
 
 import { PublicKey } from "@solana/web3.js";
 
-import { program, provider, connection } from "./helper";
+import { program, provider, wallet } from "./helper";
 import {
   getAssociatedTokenAddress,
   getOrCreateAssociatedTokenAccount,
@@ -16,23 +16,17 @@ const payer = owner.payer;
 async function deactive_sol() {
   anchor.setProvider(provider);
   const game_account = getGameAccount();
-  const admin_account = getAdminAccount();
-  const operator_account = getOperatorAccount();
+  // const admin_account = getAdminAccount();
+  // const operator_account = getOperatorAccount();
 
-  const MINT = new PublicKey("4tKdscPoPZXxnsFtfhXbchgenJGANG6KMncXSK7R7W1i");
-  const user = new PublicKey("7q66w6j8oWnctRjkxDFuP6h5YU3LpsKbDUAtpf7eTnRo");
+  const MINT = new PublicKey("CyLUbDfxQkoQFwmpLpgTc15RYduBP99qLzJ5j7LLc5G9");
+  const user = wallet.publicKey;
 
   const nft_user = await getAssociatedTokenAddress(MINT, user);
   console.log("NFT user:", nft_user.toString());
 
-  const nft_game = await getOrCreateAssociatedTokenAccount(
-    connection,
-    payer,
-    MINT,
-    game_account,
-    true
-  );
-  console.log("NFT game:", nft_game.address.toString());
+  const nft_game = await getAssociatedTokenAddress(MINT, game_account, true);
+  console.log("NFT game:", nft_game.toString());
 
   let user1_account = getUserAccount(nft_user);
   console.log("\tUser account SOL:", user1_account.toString());
@@ -44,7 +38,7 @@ async function deactive_sol() {
       .accounts({
         game: game_account,
         user: user,
-        nftGame: nft_game.address,
+        nftGame: nft_game,
         userAccount: user1_account,
         nftUser: nft_user,
         mint: MINT,

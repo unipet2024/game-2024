@@ -23,7 +23,7 @@ pub struct ActiveBySpl<'info> {
         associated_token::mint = mint,
         associated_token::authority = game,
     )]
-    pub nft_game: Account<'info, TokenAccount>,
+    pub nft_game: Box<Account<'info, TokenAccount>>,
 
     #[account(
         init_if_needed,
@@ -40,14 +40,14 @@ pub struct ActiveBySpl<'info> {
         seeds = [USER_ACCOUNT, nft_user.key().as_ref()],
         bump,
     )]
-    pub user_account: Account<'info, User>,
+    pub user_account: Box<Account<'info, User>>,
 
     #[account(
         mut,
         associated_token::mint = mint,
         associated_token::authority = user,
     )]
-    pub nft_user: Account<'info, TokenAccount>,
+    pub nft_user: Box<Account<'info, TokenAccount>>,
 
     #[account(
         mut,

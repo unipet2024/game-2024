@@ -16,23 +16,30 @@ const payer = owner.payer;
 async function active_sol() {
   anchor.setProvider(provider);
   const game_account = getGameAccount();
-  const admin_account = getAdminAccount();
-  const operator_account = getOperatorAccount();
 
-  const MINT = new PublicKey("Ess47AAczBBzUjj1g9khwwa9bGVAX8fG8v5t4NZYwLFv");
-  const user = new PublicKey("7q66w6j8oWnctRjkxDFuP6h5YU3LpsKbDUAtpf7eTnRo");
+  const MINT = new PublicKey("127RPCTD1mxMYMVsk5jw85wp4xAVGuq28HpNJUMTH27X");
+  const USDC = new PublicKey("BUJST4dk6fnM5G3FnhTVc3pjxRJE7w2C5YL9XgLbdsXW");
+  const user = new PublicKey("CfN9A1tBhC7BxoubNkNuB8CrH6W6hojNhT5kGawNdupy");
 
   const nft_user = await getAssociatedTokenAddress(MINT, user);
   console.log("NFT user:", nft_user.toString());
 
-  const nft_game = await getOrCreateAssociatedTokenAccount(
-    connection,
-    payer,
-    MINT,
-    game_account,
-    true
-  );
-  console.log("NFT game:", nft_game.address.toString());
+  // const nft_game = await getOrCreateAssociatedTokenAccount(
+  //   connection,
+  //   payer,
+  //   MINT,
+  //   game_account,
+  //   true
+  // );
+
+  const nft_game = await getAssociatedTokenAddress(MINT, game_account, true);
+  console.log("NFT game:", nft_game.toString());
+
+  const usdc_user = await getAssociatedTokenAddress(USDC, user);
+  console.log("USDC user:", usdc_user.toString());
+
+  const usdc_game = await getAssociatedTokenAddress(USDC, game_account, true);
+  console.log("USDC game:", usdc_game.toString());
 
   let user1_account = getUserAccount(nft_user);
   console.log("\tUser account SOL:", user1_account.toString());
@@ -40,11 +47,14 @@ async function active_sol() {
   console.log("----------------USER ACTIVE NFT ------------------");
   try {
     await program.methods
-      .activeBySol()
+      .activeBySpl()
       .accounts({
         game: game_account,
         user: user,
-        nftGame: nft_game.address,
+        nftGame: nft_game,
+        currencyGame: usdc_game,
+        currencyMint: USDC,
+        currencyUser: usdc_user,
         userAccount: user1_account,
         nftUser: nft_user,
         mint: MINT,
