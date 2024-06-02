@@ -19,7 +19,7 @@ pub struct ActiveBySol<'info> {
     pub game: Box<Account<'info, Game>>,
 
     #[account(
-        init,
+        init_if_needed,
         payer=user,
         associated_token::mint = mint,
         associated_token::authority = game,

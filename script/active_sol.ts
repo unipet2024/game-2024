@@ -3,7 +3,7 @@ import { Wallet } from "@coral-xyz/anchor";
 
 import { PublicKey } from "@solana/web3.js";
 
-import { program, provider, connection } from "./helper";
+import { program, provider, connection, wallet } from "./helper";
 import {
   getAssociatedTokenAddress,
   getOrCreateAssociatedTokenAccount,
@@ -19,8 +19,8 @@ async function active_sol() {
   const admin_account = getAdminAccount();
   const operator_account = getOperatorAccount();
 
-  const MINT = new PublicKey("Ess47AAczBBzUjj1g9khwwa9bGVAX8fG8v5t4NZYwLFv");
-  const user = new PublicKey("7q66w6j8oWnctRjkxDFuP6h5YU3LpsKbDUAtpf7eTnRo");
+  const MINT = new PublicKey("VxaieiYkWUkXL6NFqAhp8aVwDVq3xgt7cvxtXMju4jo");
+  const user = wallet.publicKey;
 
   const nft_user = await getAssociatedTokenAddress(MINT, user);
   console.log("NFT user:", nft_user.toString());

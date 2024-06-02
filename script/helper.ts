@@ -39,7 +39,7 @@ function base58ToKeypair(base58PrivateKey: string): Keypair {
 
 // Example usage
 const base58PrivateKey =
-  "4HsXNquntYAZJa8oWVAUYchBYB4FzQtSHg9rAJ5zugxTLTbbmKWHV5xwTyMD3QZJR89enwU5Hs8uhDdHN4fqv2s4"; // Replace with actual base58 private key
+  "63SLagfokbmGjRqYxWPUVPWtvK6sDryPJRmCi7Vm5ibPBerwQxEtDT256G8d3Gm8NMDMfuj177comLqFk4kNBe7C"; // Replace with actual base58 private key
 export const wallet = base58ToKeypair(base58PrivateKey);
 console.log(`Public Key: ${wallet.publicKey.toBase58()}`); //prints the base58-encoded public key
 // console.log(`Private Key (Base58): ${wallet.secretKey.toString()}`); // prints the base58-encoded private key
