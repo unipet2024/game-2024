@@ -17,7 +17,7 @@ async function active_sol() {
   anchor.setProvider(provider);
   const game_account = getGameAccount();
 
-  const MINT = new PublicKey("127RPCTD1mxMYMVsk5jw85wp4xAVGuq28HpNJUMTH27X");
+  const MINT = new PublicKey("BEPcn67dJMpQRW3JkLxWCLdX9FC6fb8wSevVe5EkeU5x");
   const USDC = new PublicKey("BUJST4dk6fnM5G3FnhTVc3pjxRJE7w2C5YL9XgLbdsXW");
   const user = new PublicKey("CfN9A1tBhC7BxoubNkNuB8CrH6W6hojNhT5kGawNdupy");
 

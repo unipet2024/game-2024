@@ -19,7 +19,7 @@ pub struct ActiveBySpl<'info> {
 
     #[account(
         init_if_needed,
-        payer=user,
+        payer = user,
         associated_token::mint = mint,
         associated_token::authority = game,
     )]
@@ -59,8 +59,8 @@ pub struct ActiveBySpl<'info> {
     #[account(mut, signer)]
     pub user: Signer<'info>,
 
-    pub mint: Account<'info, Mint>,
-    pub currency_mint: Account<'info, Mint>,
+    pub mint: Box<Account<'info, Mint>>,
+    pub currency_mint: Box<Account<'info, Mint>>,
     pub associated_token_program: Program<'info, AssociatedToken>,
     pub token_program: Program<'info, Token>,
     pub system_program: Program<'info, System>,
